@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MapActivity">
+
+    <RelativeLayout
+        android:id="@+id/map_view"
+        android:layout_width="match_parent"
+        android:layout_height="387dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="-194dp"
+        android:layout_marginBottom="342dp" >
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/checkCurrentLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:onClick="goToCurrentLocation"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="295dp"
+        android:text="현위치로 이동" />
+
+    <TableLayout
+        android:id="@+id/stationTable"
+        android:layout_width="385dp"
+        android:layout_height="201dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="95dp"
+        android:stretchColumns="*"
+        android:visibility="visible">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="37dp"
+            android:background="#81BDBFBF">
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="92dp"
+                android:layout_height="wrap_content"
+                android:text="보관소명"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="94dp"
+                android:layout_height="wrap_content"
+                android:text="배치 현황"
+                android:textAlignment="center" />
+        </TableRow>
+
+    </TableLayout>
+
+    <TableLayout
+        android:id="@+id/bicycleTable"
+        android:layout_width="387dp"
+        android:layout_height="78dp"
+        android:layout_alignStart="@+id/stationTable"
+        android:layout_alignEnd="@+id/stationTable"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="-2dp"
+        android:layout_marginBottom="8dp"
+        android:stretchColumns="*"
+        android:visibility="visible">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#81BDBFBF">
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="18dp"
+                android:layout_height="wrap_content"
+                android:text="자전거 id"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="상세 위치"
+                android:textAlignment="center" />
+        </TableRow>
+
+    </TableLayout>
+
+</RelativeLayout>

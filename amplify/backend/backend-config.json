@@ -1,0 +1,10 @@
+{
+  "auth": {
+    "chaosbicyclecbfce6c8": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false
+    }
+  }
+}

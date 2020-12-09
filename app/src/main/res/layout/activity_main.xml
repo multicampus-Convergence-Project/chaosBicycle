@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="42dp"
+        android:text="WELCOME CHAOS!"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintVertical_bias="0.03" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="418dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="183dp"
+        android:layout_marginBottom="78dp"
+        app:layout_constraintBottom_toTopOf="@+id/testButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/seoulmap" />
+
+    <TextView
+        android:id="@+id/gangseo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="136dp"
+        android:onClick="goToMap"
+        android:text="강서구"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/guro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginBottom="60dp"
+        android:onClick="goToMap"
+        android:text="구로구"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/gwanak"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="156dp"
+        android:layout_marginBottom="32dp"
+        android:onClick="goToMap"
+        android:text="관악구"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/geumcheon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="104dp"
+        android:layout_marginBottom="16dp"
+        android:onClick="goToMap"
+        android:text="금천구"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/yeongdeungpo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="116dp"
+        android:layout_marginBottom="88dp"
+        android:onClick="goToMap"
+        android:text="영등포구"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/yangcheon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="24dp"
+        android:onClick="goToMap"
+        android:text="양천구"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="@+id/gangseo"
+        app:layout_constraintTop_toBottomOf="@+id/gangseo" />
+
+    <TextView
+        android:id="@+id/songpa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="288dp"
+        android:layout_marginTop="28dp"
+        android:onClick="goToMap"
+        android:text="송파구"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="@+id/gangseo"
+        app:layout_constraintTop_toBottomOf="@+id/gangseo" />
+
+    <TextView
+        android:id="@+id/gangnam"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="232dp"
+        android:layout_marginTop="48dp"
+        android:onClick="goToMap"
+        android:text="강남구"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="@+id/gangseo"
+        app:layout_constraintTop_toBottomOf="@+id/gangseo" />
+
+    <TextView
+        android:id="@+id/seocho"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="192dp"
+        android:layout_marginTop="76dp"
+        android:onClick="goToMap"
+        android:text="서초구"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="@+id/gangseo"
+        app:layout_constraintTop_toBottomOf="@+id/gangseo" />
+
+    <TextView
+        android:id="@+id/dongjak"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="136dp"
+        android:layout_marginTop="48dp"
+        android:onClick="goToMap"
+        android:text="동작구"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="@+id/gangseo"
+        app:layout_constraintTop_toBottomOf="@+id/gangseo" />
+
+    <TextView
+        android:id="@+id/dobong"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="212dp"
+        android:onClick="goToMap"
+        android:text="도봉구"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="@+id/gangbuk"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/seongbuk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="40dp"
+        android:onClick="goToMap"
+        android:text="성북구"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/jungnang"
+        app:layout_constraintEnd_toEndOf="@+id/dongdaemun"
+        app:layout_constraintTop_toTopOf="@+id/jungnang"
+        app:layout_constraintVertical_bias="0.526" />
+
+    <TextView
+        android:id="@+id/jungnang"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:onClick="goToMap"
+        android:text="중랑구"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="@+id/gwangjin"
+        app:layout_constraintStart_toStartOf="@+id/gwangjin"
+        app:layout_constraintTop_toTopOf="@+id/jongno" />
+
+    <TextView
+        android:id="@+id/eunpyeong"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="68dp"
+        android:onClick="goToMap"
+        android:text="은평구"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toStartOf="@+id/gangbuk"
+        app:layout_constraintTop_toTopOf="@+id/gangbuk" />
+
+    <TextView
+        android:id="@+id/jung"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="4dp"
+        android:onClick="goToMap"
+        android:text="중구"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/seongdong"
+        app:layout_constraintEnd_toStartOf="@+id/seongdong" />
+
+    <TextView
+        android:id="@+id/seongdong"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:onClick="goToMap"
+        android:text="성동구"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/yongsan"
+        app:layout_constraintEnd_toStartOf="@+id/gangnam"
+        app:layout_constraintHorizontal_bias="0.282"
+        app:layout_constraintStart_toStartOf="@+id/gangnam" />
+
+    <TextView
+        android:id="@+id/gwangjin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:onClick="goToMap"
+        android:text="광진구"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/seongdong"
+        app:layout_constraintStart_toEndOf="@+id/seongdong"
+        app:layout_constraintTop_toBottomOf="@+id/seongdong"
+        app:layout_constraintVertical_bias="0.473" />
+
+    <TextView
+        android:id="@+id/yongsan"
+        android:layout_width="51dp"
+        android:layout_height="21dp"
+        android:layout_marginBottom="24dp"
+        android:onClick="goToMap"
+        android:text="용산구"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/yeongdeungpo"
+        app:layout_constraintEnd_toStartOf="@+id/seocho"
+        app:layout_constraintHorizontal_bias="0.235"
+        app:layout_constraintStart_toEndOf="@+id/dongjak" />
+
+    <TextView
+        android:id="@+id/dongdaemun"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="4dp"
+        android:onClick="goToMap"
+        android:text="동대문구"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toStartOf="@+id/jungnang"
+        app:layout_constraintTop_toTopOf="@+id/jungnang" />
+
+    <TextView
+        android:id="@+id/mapo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginBottom="28dp"
+        android:onClick="goToMap"
+        android:text="마포구"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/yangcheon"
+        app:layout_constraintStart_toEndOf="@+id/yangcheon" />
+
+    <TextView
+        android:id="@+id/gangbuk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:onClick="goToMap"
+        android:text="강북구"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="@+id/seongbuk"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/seongbuk"
+        app:layout_constraintTop_toBottomOf="@+id/dobong" />
+
+    <TextView
+        android:id="@+id/nowon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="2dp"
+        android:onClick="goToMap"
+        android:text="노원구"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toEndOf="@+id/dobong"
+        app:layout_constraintTop_toBottomOf="@+id/dobong" />
+
+    <TextView
+        android:id="@+id/jongno"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:onClick="goToMap"
+        android:text="종로구"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/jung"
+        app:layout_constraintStart_toEndOf="@+id/seodaemun"
+        app:layout_constraintTop_toBottomOf="@+id/eunpyeong"
+        app:layout_constraintVertical_bias="0.064" />
+
+    <TextView
+        android:id="@+id/seodaemun"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="4dp"
+        android:onClick="goToMap"
+        android:text="서대문구"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toEndOf="@+id/mapo"
+        app:layout_constraintTop_toBottomOf="@+id/jongno" />
+
+    <TextView
+        android:id="@+id/gangdong"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="3dp"
+        android:text="강동구"
+        android:textColor="#090000"
+        app:layout_constraintStart_toEndOf="@+id/gwangjin"
+        app:layout_constraintTop_toTopOf="@+id/gwangjin" />
+
+    <Button
+        android:id="@+id/testButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="106dp"
+        android:onClick="goToMqttTest"
+        android:text="mqtt통신테스트"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
