@@ -6,6 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".MapActivity">
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/stationTable"
+        android:layout_alignStart="@+id/stationTable"
+        android:layout_alignEnd="@+id/stationTable"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="29dp"
+        android:layout_marginBottom="10dp"
+        android:text="재배치 필요한 보관소" />
+
     <RelativeLayout
         android:id="@+id/map_view"
         android:layout_width="match_parent"
@@ -27,72 +39,39 @@
         android:layout_marginBottom="295dp"
         android:text="현위치로 이동" />
 
-    <TableLayout
+    <ListView
         android:id="@+id/stationTable"
-        android:layout_width="385dp"
-        android:layout_height="201dp"
+        android:layout_width="192dp"
+        android:layout_height="245dp"
+        android:layout_alignTop="@+id/bicycleTable"
+        android:layout_alignBottom="@+id/bicycleTable"
         android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="10dp"
-        android:layout_marginBottom="95dp"
-        android:stretchColumns="*"
-        android:visibility="visible">
+        android:layout_marginStart="13dp"
+        android:layout_marginLeft="9dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="-6dp"
+        android:layout_toStartOf="@+id/bicycleTable" />
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="37dp"
-            android:background="#81BDBFBF">
-
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="92dp"
-                android:layout_height="wrap_content"
-                android:text="보관소명"
-                android:textAlignment="center" />
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="94dp"
-                android:layout_height="wrap_content"
-                android:text="배치 현황"
-                android:textAlignment="center" />
-        </TableRow>
-
-    </TableLayout>
-
-    <TableLayout
+    <ListView
         android:id="@+id/bicycleTable"
-        android:layout_width="387dp"
-        android:layout_height="78dp"
-        android:layout_alignStart="@+id/stationTable"
-        android:layout_alignEnd="@+id/stationTable"
+        android:layout_width="192dp"
+        android:layout_height="245dp"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginEnd="-2dp"
-        android:layout_marginBottom="8dp"
-        android:stretchColumns="*"
-        android:visibility="visible">
+        android:layout_marginEnd="9dp"
+        android:layout_marginBottom="6dp" />
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#81BDBFBF">
-
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="18dp"
-                android:layout_height="wrap_content"
-                android:text="자전거 id"
-                android:textAlignment="center" />
-
-            <TextView
-                android:id="@+id/textView5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="상세 위치"
-                android:textAlignment="center" />
-        </TableRow>
-
-    </TableLayout>
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="107dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bicycleTable"
+        android:layout_alignStart="@+id/bicycleTable"
+        android:layout_alignEnd="@+id/bicycleTable"
+        android:layout_marginStart="42dp"
+        android:layout_marginEnd="43dp"
+        android:layout_marginBottom="9dp"
+        android:text="도난 자전거 목록" />
 
 </RelativeLayout>

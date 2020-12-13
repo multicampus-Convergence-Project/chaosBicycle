@@ -1,41 +1,81 @@
 package com.example.chaosbicycle;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.TableLayout;
-import android.widget.TableRow;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.amazonaws.auth.CognitoCachingCredentialsProvider;
+import com.amazonaws.mobileconnectors.iot.AWSIotKeystoreHelper;
+import com.amazonaws.mobileconnectors.iot.AWSIotMqttClientStatusCallback;
+import com.amazonaws.mobileconnectors.iot.AWSIotMqttLastWillAndTestament;
+import com.amazonaws.mobileconnectors.iot.AWSIotMqttManager;
+import com.amazonaws.mobileconnectors.iot.AWSIotMqttNewMessageCallback;
+import com.amazonaws.mobileconnectors.iot.AWSIotMqttQos;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.iot.AWSIotClient;
+import com.amazonaws.services.iot.model.AttachPrincipalPolicyRequest;
+import com.amazonaws.services.iot.model.CreateKeysAndCertificateRequest;
+import com.amazonaws.services.iot.model.CreateKeysAndCertificateResult;
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.io.UnsupportedEncodingException;
+import java.security.KeyStore;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
+import java.util.Iterator;
+import java.util.List;
+import java.util.UUID;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.example.chaosbicycle.PubSubActivity.LOG_TAG;
 
 
 public class MapActivity extends AppCompatActivity {
 
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private static final int PERMISSIONS_REQUEST_ACCESS_CALL_PHONE = 2;
-//    private static final String CUSTOMER_SPECIFIC_ENDPOINT = "a2ta04z8hhgodv-ats.iot.us-east-1.amazonaws.com";
+//  private static final String CUSTOMER_SPECIFIC_ENDPOINT = "a2ta04z8hhgodv-ats.iot.us-east-1.amazonaws.com";
 
+    private List<Model__station> checkAlready;
 
     private MapView mapView;
     private Boolean isCurrentCheck = false;
+
+    // IoT endpoint
+    // AWS Iot CLI describe-endpoint call returns: XXXXXXXXXX.iot.<region>.amazonaws.com
+    private static final String CUSTOMER_SPECIFIC_ENDPOINT = "a1jpskevl8sr71-ats.iot.us-east-1.amazonaws.com";
+    // Cognito pool ID. For this app, pool needs to be unauthenticated pool with
+    // AWS IoT permissions.
+    private static final String COGNITO_POOL_ID = "us-east-1:af5f05eb-7fbe-45ba-a2ce-04e5f8963b0a";
+    // Name of the AWS IoT policy to attach to a newly created certificate
+    private static final String AWS_IOT_POLICY_NAME = "sdsadas";
+
+    // Region of AWS IoT
+    private static final Regions MY_REGION = Regions.US_EAST_1;
+    // Filename of KeyStore file on the filesystem
+    private static final String KEYSTORE_NAME = "iot_keystore";
+    // Password for the private key in the KeyStore
+    private static final String KEYSTORE_PASSWORD = "password";
+    // Certificate and key aliases in the KeyStore
+    private static final String CERTIFICATE_ID = "default";
+    KeyStore clientKeyStore = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,85 +84,9 @@ public class MapActivity extends AppCompatActivity {
         setContentView(R.layout.activity_map);
 
         Intent intent = getIntent();
-        int state = intent.getIntExtra("state",0);
+        String state = intent.getStringExtra("state");
 
-        if(R.id.jongno == state){
-            Log.i("chaos","jongno");
-            state = 1;
-        }else if(R.id.gangseo == state){
-            Log.i("chaos","gangseo");
-            state = 2;
-        }else if(R.id.guro == state){
-            Log.i("chaos","guro");
-            state = 3;
-        }else if(R.id.gwanak == state){
-            Log.i("chaos","gwanak");
-            state = 4;
-        }else if(R.id.geumcheon == state){
-            Log.i("chaos","geumcheon");
-            state = 5;
-        }else if(R.id.yeongdeungpo == state){
-            Log.i("chaos","yeongdeungpo");
-            state = 6;
-        }else if(R.id.yangcheon == state){
-            Log.i("chaos","yangcheon");
-            state = 7;
-        }else if(R.id.songpa == state){
-            Log.i("chaos","songpa");
-            state = 8;
-        }else if(R.id.gangnam == state){
-            Log.i("chaos","gangnam");
-            state = 9;
-        }else if(R.id.seocho == state){
-            Log.i("chaos","seocho");
-            state = 0;
-        }else if(R.id.dongjak == state){
-            Log.i("chaos","dongjak");
-            state = 1;
-        }else if(R.id.gangdong == state){
-            Log.i("chaos","gangdong");
-            state = 1;
-        }else if(R.id.dobong == state){
-            Log.i("chaos","dobong");
-            state = 1;
-        }else if(R.id.seongbuk == state){
-            Log.i("chaos","seongbuk");
-            state = 1;
-        }else if(R.id.jungnang == state){
-            Log.i("chaos","jungnang");
-            state = 1;
-        }else if(R.id.eunpyeong == state){
-            Log.i("chaos","eunpyeong");
-            state = 1;
-        }else if(R.id.jung == state){
-            Log.i("chaos","jung");
-            state = 1;
-        }else if(R.id.seongdong == state){
-            Log.i("chaos","seongdong");
-            state = 1;
-        }else if(R.id.gwangjin == state){
-            Log.i("chaos","gwangjin");
-            state = 1;
-        }else if(R.id.yongsan == state){
-            Log.i("chaos","yongsan");
-            state = 1;
-        }else if(R.id.dongdaemun == state){
-            Log.i("chaos","dongdaemun");
-            state = 1;
-        }else if(R.id.seodaemun == state){
-            Log.i("chaos","seodaemun");
-            state = 1;
-        }else if(R.id.mapo == state){
-            Log.i("chaos","mapo");
-            state = 1;
-        }else if(R.id.gangbuk == state){
-            Log.i("chaos","gangbuk");
-            state = 1;
-        }else if(R.id.nowon == state){
-            Log.i("chaos","nowon");
-            state = 1;
-        }
-
+        Log.i("chaos",state);
 
         mapView = new MapView(this);
 
@@ -132,73 +96,121 @@ public class MapActivity extends AppCompatActivity {
         //true면 앱 실행 시 애니메이션 효과가 나오고 false면 애니메이션이 나오지않음.
         mapViewContainer.addView(mapView);
 
-
-        try {
-            // DB에서 보관소 위치 정보 받아오기
-            String stationResult = new StationAsyncTask(state).execute().get();
-            Log.i("chaos",stationResult);
-
-            //지도 만들기 함수 실행
-            createMap(stationResult);
-
-            //재배치 필요한 보관소 테이블 생성 함수 실행
-            createStationTable(stationResult);
-
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        Log.i("chaos","getStation start");
+        getStation(state);
 
         //도난 자전거 테이블 생성 함수 실행
         createBicycleTable();
     }
 
+    //Lambda 사용해서 db연결
+    public void getStation(String state) {
+        //Retrofit 호출
+        Model__station modelCheckAlready = new Model__station();
+        Call<List<Model__station>> call = RetrofitClient.getApiService().getStationData(state);
+        call.enqueue(new Callback<List<Model__station>>() {
+            @Override
+            public void onResponse(Call<List<Model__station>> call, Response<List<Model__station>> response) {
+                if(!response.isSuccessful()){
+                    Log.e("연결이 비정상적 : ", "error code : " + response.code());
+                    return;
+                }
+                checkAlready = response.body();
+                Log.d("연결이 성공적 : ", response.body().toString());
+                Log.d(" getStation yejin", String.valueOf(checkAlready));
+
+                //지도 만들기 함수 실행
+                createMap();
+            }
+            @Override
+            public void onFailure(Call<List<Model__station>> call, Throwable t) {
+                Log.e("연결실패", t.getMessage());
+            }
+        });
+    }
+
     //지도 만들기 함수 : 보관소 + 도난자전거 마커 표시
-    public void createMap(String stationResult){
-        String[] data = stationResult.split("]");
-        //Log.i("chaos",stationResult+"\n"+data);
+    public void createMap(){
+        int i = 0;
+        Log.d("createMap yejin", String.valueOf(checkAlready));
 
-        MapPOIItem[] StationMarker = new MapPOIItem[data.length];
-
-        // 보관소 위치 지도에 마커로 표시
-        for (int i=0;i<StationMarker.length;i++){
-            String[] stationData = data[i].split(",");
-            //Log.i("chaos", i+": "+stationData[0]);
-            StationMarker[i] = new MapPOIItem();
-            StationMarker[i].setItemName(stationData[3]);
-            StationMarker[i].setTag(i);
-            StationMarker[i].setMapPoint(MapPoint.mapPointWithGeoCoord(Double.parseDouble(stationData[1]),Double.parseDouble(stationData[2])));
+        for(Model__station station : checkAlready){
+            MapPOIItem StationMarker = new MapPOIItem();
+            StationMarker.setItemName(station.getStationName());
+            StationMarker.setTag(i);
+            StationMarker.setMapPoint(MapPoint.mapPointWithGeoCoord(Double.parseDouble(station.getStationLatitude()),Double.parseDouble(station.getStationLongitude())));
 
             if(i<10){
                 // 기본으로 제공하는 BluePin 마커 모양.
-                StationMarker[i].setMarkerType(MapPOIItem.MarkerType.YellowPin);
+                StationMarker.setMarkerType(MapPOIItem.MarkerType.YellowPin);
             }else{
                 // 기본으로 제공하는 BluePin 마커 모양.
-                StationMarker[i].setMarkerType(MapPOIItem.MarkerType.BluePin);
+                StationMarker.setMarkerType(MapPOIItem.MarkerType.BluePin);
             }
 
             // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
-            StationMarker[i].setSelectedMarkerType(MapPOIItem.MarkerType.RedPin);
+            StationMarker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin);
             /* Custom Marker XML 설정 구문 */
             View mView = getLayoutInflater().inflate(R.layout.activity_custommaker, null);
             ((ImageView) mView.findViewById(R.id.marker_image)).setImageResource(R.drawable.bike); /* Maker Image 변경 해주는 구문 */
-            ((TextView) mView.findViewById(R.id.main_title)).setText(stationData[4]+":"+stationData[3]); /* Maker Text 변경 해주는 구문 */
-            ((TextView) mView.findViewById(R.id.sub_title)).setText("현황 : "+stationData[5]+"대 부족"); /* Maker 장소 변경 해주는 구문 */
-            StationMarker[i].setCustomCalloutBalloon(mView);
+            ((TextView) mView.findViewById(R.id.main_title)).setText(station.getStationName()); /* Maker Text 변경 해주는 구문 */
+            ((TextView) mView.findViewById(R.id.sub_title)).setText("현황 : "+station.getParkingBikeTotCnt()+"대 부족"); /* Maker 장소 변경 해주는 구문 */
+            StationMarker.setCustomCalloutBalloon(mView);
 
+            mapView.addPOIItem(StationMarker);
+            i++;
         }
-        mapView.addPOIItems(StationMarker);
+
+        //재배치 필요한 보관소 테이블 생성 함수 실행
+        createStationTable();
+
+    }
+
+    //재배치 필요한 보관소 테이블 생성 함수
+    public void createStationTable(){
+        ListView listview = (ListView)findViewById(R.id.stationTable);
+
+        //데이터를 저장하게 되는 리스트
+        List<String> list = new ArrayList<>();
+
+        //리스트뷰와 리스트를 연결하기 위해 사용되는 어댑터
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_1, list);
+
+        //리스트뷰의 어댑터를 지정해준다.
+        listview.setAdapter(adapter);
 
 
-        // 도난자전거 위치 정보 받아오기 ==> >>>>테스트로??<<<<
-        //String StolenBicyleResult = new StationAsyncTask().execute().get();
+        //리스트뷰의 아이템을 클릭시 해당 아이템의 문자열을 가져오기 위한 처리
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-        //custom marker 표시 ==> 도난 자전거 표시에 사용할 예정
+            @Override
+            public void onItemClick(AdapterView<?> adapterView,
+                                    View view, int position, long id) {
+                //클릭한 아이템의 문자열을 가져옴
+                String selected_item = (String)adapterView.getItemAtPosition(position);
+                Log.i("yejin",selected_item);
+            }
+        });
+
+
+        //리스트뷰에 보여질 아이템을 추가
+        Iterator iterator = checkAlready.iterator();
+        for (int i=0;i<10;i++){
+            Model__station stationData = ((Model__station) iterator.next());
+            list.add(stationData.getStationName()+"\n"+stationData.getParkingBikeTotCnt()+"개 부족");
+        }
+
+    }
+
+
+    //도난 자전거 테이블 생성 함수 실행
+    public void createBicycleTable(){
+        //도난 자전거 표시
         MapPOIItem StolenBicycleMarker = new MapPOIItem();
         StolenBicycleMarker.setItemName("도난 자전거");
         StolenBicycleMarker.setTag(0);
-        StolenBicycleMarker.setMapPoint(MapPoint.mapPointWithGeoCoord(37.5614579595, 126.961949155));
+        StolenBicycleMarker.setMapPoint(MapPoint.mapPointWithGeoCoord(37.5614579596, 126.961949154));
         StolenBicycleMarker.setMarkerType(MapPOIItem.MarkerType.CustomImage); // 마커타입을 커스텀 마커로 지정.
         StolenBicycleMarker.setCustomImageResourceId(R.drawable.bike); // 마커 이미지.
         StolenBicycleMarker.setCustomImageAutoscale(true); // hdpi, xhdpi 등 안드로이드 플랫폼의 스케일을 사용할 경우 지도 라이브러리의 스케일 기능을 꺼줌.
@@ -207,70 +219,225 @@ public class MapActivity extends AppCompatActivity {
         /* Custom Marker XML 설정 구문 */
         View mView = getLayoutInflater().inflate(R.layout.activity_custommaker, null);
         ((ImageView) mView.findViewById(R.id.marker_image)).setImageResource(R.drawable.alert); /* Maker Image 변경 해주는 구문 */
-        ((TextView) mView.findViewById(R.id.main_title)).setText("이미지 클릭 시 부저 울림"); /* Maker Text 변경 해주는 구문 */
-        ((TextView) mView.findViewById(R.id.sub_title)).setText("1시간 전 신고"); /* Maker 장소 변경 해주는 구문 */
+        ((TextView) mView.findViewById(R.id.main_title)).setText("1시간 전 신고"); /* Maker Text 변경 해주는 구문 */
+        ((TextView) mView.findViewById(R.id.sub_title)).setText(""); /* Maker 장소 변경 해주는 구문 */
 
         StolenBicycleMarker.setCustomCalloutBalloon(mView);
         mapView.addPOIItem(StolenBicycleMarker);
+
+
+        ListView listview = (ListView)findViewById(R.id.bicycleTable);
+
+        //데이터를 저장하게 되는 리스트
+        List<String> list = new ArrayList<>();
+
+        //리스트뷰와 리스트를 연결하기 위해 사용되는 어댑터
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_1, list);
+
+        //리스트뷰의 어댑터를 지정해준다.
+        listview.setAdapter(adapter);
+
+
+        //리스트뷰의 아이템을 클릭시 해당 아이템의 문자열을 가져오기 위한 처리
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> adapterView,
+                                    View view, int position, long id) {
+                //클릭한 아이템의 문자열을 가져옴
+                String selected_item = (String)adapterView.getItemAtPosition(position);
+                Log.i("yejin",selected_item);
+                StolenBicycleMarker.setCustomImageResourceId(R.drawable.alert);
+                mapView.addPOIItem(StolenBicycleMarker);
+
+                //mqtt 통신해보자...
+                mqttConntect();
+
+                new Handler().postDelayed(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        StolenBicycleMarker.setCustomImageResourceId(R.drawable.bike);
+                        mapView.addPOIItem(StolenBicycleMarker);
+                    }
+                }, 6000);// 6초 정도 딜레이를 준 후 시작
+            }
+
+            private void mqttConntect() {
+                // MQTT client IDs are required to be unique per AWS IoT account.
+                // This UUID is "practically unique" but does not _guarantee_
+                // uniqueness.
+                String clientId = UUID.randomUUID().toString();
+
+                // Initialize the AWS Cognito credentials provider
+                CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
+                        getApplicationContext(), // context
+                        COGNITO_POOL_ID, // Identity Pool ID
+                        MY_REGION // Region
+                );
+
+                Region region = Region.getRegion(MY_REGION);
+
+                // MQTT Client
+                AWSIotMqttManager mqttManager = new AWSIotMqttManager(clientId, CUSTOMER_SPECIFIC_ENDPOINT);
+
+                // Set keepalive to 10 seconds.  Will recognize disconnects more quickly but will also send
+                // MQTT pings every 10 seconds.
+                mqttManager.setKeepAlive(10);
+
+                // Set Last Will and Testament for MQTT.  On an unclean disconnect (loss of connection)
+                // AWS IoT will publish this message to alert other clients.
+                AWSIotMqttLastWillAndTestament lwt = new AWSIotMqttLastWillAndTestament("my/lwt/topic",
+                        "Android client lost connection", AWSIotMqttQos.QOS0);
+                mqttManager.setMqttLastWillAndTestament(lwt);
+
+                // IoT Client (for creation of certificate if needed)
+                AWSIotClient mIotAndroidClient = new AWSIotClient(credentialsProvider);
+                mIotAndroidClient.setRegion(region);
+
+                String keystorePath = getFilesDir().getPath();
+
+                // To load cert/key from keystore on filesystem
+                try {
+                    if (AWSIotKeystoreHelper.isKeystorePresent(keystorePath, KEYSTORE_NAME)) {
+                        if (AWSIotKeystoreHelper.keystoreContainsAlias(CERTIFICATE_ID, keystorePath,
+                                KEYSTORE_NAME, KEYSTORE_PASSWORD)) {
+                            Log.i(LOG_TAG, "Certificate " + CERTIFICATE_ID
+                                    + " found in keystore - using for MQTT."+keystorePath);
+                            // load keystore from file into memory to pass on connection
+                            clientKeyStore = AWSIotKeystoreHelper.getIotKeystore(CERTIFICATE_ID,
+                                    keystorePath, KEYSTORE_NAME, KEYSTORE_PASSWORD);
+                        } else {
+                            Log.i(LOG_TAG, "Key/cert " + CERTIFICATE_ID + " not found in keystore.");
+                        }
+                    } else {
+                        Log.i(LOG_TAG, "Keystore " + keystorePath + "/" + KEYSTORE_NAME + " not found.");
+                    }
+                } catch (Exception e) {
+                    Log.e(LOG_TAG, "An error occurred retrieving cert/key from keystore.", e);
+                }
+
+                if (clientKeyStore == null) {
+                    Log.i(LOG_TAG, "Cert/key was not found in keystore - creating new key and certificate.");
+
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                // Create a new private key and certificate. This call
+                                // creates both on the server and returns them to the
+                                // device.
+                                CreateKeysAndCertificateRequest createKeysAndCertificateRequest =
+                                        new CreateKeysAndCertificateRequest();
+                                createKeysAndCertificateRequest.setSetAsActive(true);
+                                final CreateKeysAndCertificateResult createKeysAndCertificateResult;
+                                createKeysAndCertificateResult =
+                                        mIotAndroidClient.createKeysAndCertificate(createKeysAndCertificateRequest);
+                                Log.i(LOG_TAG,
+                                        "Cert ID: " +
+                                                createKeysAndCertificateResult.getCertificateId() +
+                                                " created.");
+
+                                // store in keystore for use in MQTT client
+                                // saved as alias "default" so a new certificate isn't
+                                // generated each run of this application
+                                AWSIotKeystoreHelper.saveCertificateAndPrivateKey(CERTIFICATE_ID,
+                                        createKeysAndCertificateResult.getCertificatePem(),
+                                        createKeysAndCertificateResult.getKeyPair().getPrivateKey(),
+                                        keystorePath, KEYSTORE_NAME, KEYSTORE_PASSWORD);
+
+                                // load keystore from file into memory to pass on
+                                // connection
+                                clientKeyStore = AWSIotKeystoreHelper.getIotKeystore(CERTIFICATE_ID,
+                                        keystorePath, KEYSTORE_NAME, KEYSTORE_PASSWORD);
+
+                                // Attach a policy to the newly created certificate.
+                                // This flow assumes the policy was already created in
+                                // AWS IoT and we are now just attaching it to the
+                                // certificate.
+                                AttachPrincipalPolicyRequest policyAttachRequest =
+                                        new AttachPrincipalPolicyRequest();
+                                policyAttachRequest.setPolicyName(AWS_IOT_POLICY_NAME);
+                                policyAttachRequest.setPrincipal(createKeysAndCertificateResult
+                                        .getCertificateArn());
+                                mIotAndroidClient.attachPrincipalPolicy(policyAttachRequest);
+
+                                //connect
+                                mqttManager.connect(clientKeyStore, new AWSIotMqttClientStatusCallback() {
+                                    @Override
+                                    public void onStatusChanged(final AWSIotMqttClientStatus status,
+                                                                final Throwable throwable) {
+                                        Log.d(LOG_TAG, "Status = " + String.valueOf(status));
+
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                if (status == AWSIotMqttClientStatus.Connecting) {
+                                                    Log.i("yejin","Connecting...");
+
+                                                } else if (status == AWSIotMqttClientStatus.Connected) {
+                                                    Log.i("yejin","Connected");
+                                                    //subscribe
+                                                    mqttManager.subscribeToTopic("test", AWSIotMqttQos.QOS0,
+                                                            new AWSIotMqttNewMessageCallback() {
+                                                                @Override
+                                                                public void onMessageArrived(final String topic, final byte[] data) {
+                                                                    runOnUiThread(new Runnable() {
+                                                                        @Override
+                                                                        public void run() {
+                                                                            try {
+                                                                                String message = new String(data, "UTF-8");
+                                                                                Log.d(LOG_TAG, "Message arrived:");
+                                                                                Log.d(LOG_TAG, "   Topic: " + topic);
+                                                                                Log.d(LOG_TAG, " Message: " + message);
+
+                                                                            } catch (UnsupportedEncodingException e) {
+                                                                                Log.e(LOG_TAG, "Message encoding error.", e);
+                                                                            }
+                                                                        }
+                                                                    });
+                                                                }
+                                                            });
+                                                    //publish
+                                                    mqttManager.publishString("test자전거 send!", "test", AWSIotMqttQos.QOS0);
+
+                                                } else if (status == AWSIotMqttClientStatus.Reconnecting) {
+                                                    if (throwable != null) {
+                                                        Log.e(LOG_TAG, "Connection error.", throwable);
+                                                    }
+                                                    Log.i("yejin","Reconnecting");
+                                                } else if (status == AWSIotMqttClientStatus.ConnectionLost) {
+                                                    if (throwable != null) {
+                                                        Log.e(LOG_TAG, "Connection error.", throwable);
+                                                    }
+                                                    Log.i("yejin","Disconnected");
+                                                } else {
+                                                    Log.i("yejin","Disconnected");
+
+                                                }
+                                            }
+                                        });
+                                    }
+                                });
+
+                            } catch (Exception e) {
+                                Log.e(LOG_TAG,
+                                        "Exception occurred when generating new private key and certificate.",
+                                        e);
+                            }
+                        }
+                    }).start();
+                }
+            }
+        });
+
+
+        //리스트뷰에 보여질 아이템을 추가
+        list.add("test자전거");
+
     }
-
-    //재배치 필요한 보관소 테이블 생성 함수
-    public void createStationTable(String stationResult){
-        TableLayout stationLayout = (TableLayout) findViewById(R.id.stationTable);
-
-        String[] data = stationResult.split("]");
-        //Log.i("chaos",StationResult+"\n"+data);
-
-        // 보관소 위치 지도에 마커로 표시
-        for (int i=0;i<10;i++){
-            TableRow stationRow = new TableRow(this);
-            stationRow.setLayoutParams(new TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
-
-            String[] stationData = data[i].split(",");
-
-            //보관소 명 입력
-            TextView textview = new TextView(this);
-            textview.setText(stationData[3]);
-            textview.setGravity(Gravity.CENTER);
-            stationRow.addView(textview);
-
-            //현황 입력
-            TextView textview2 = new TextView(this);
-            textview2.setText(stationData[5]+"개 부족");
-            textview2.setGravity(Gravity.CENTER);
-            stationRow.addView(textview2);
-
-            //table row 추가
-            stationLayout.addView(stationRow);
-            stationRow.removeView(stationRow);
-        }
-
-    }
-
-    //도난 자전거 테이블 생성 함수 실행
-    public void createBicycleTable(){
-        TableLayout stationLayout = (TableLayout) findViewById(R.id.bicycleTable);
-        TableRow stationRow = new TableRow(this);
-        stationRow.setLayoutParams(new TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
-
-        //보관소 명 입력
-        TextView textview = new TextView(this);
-        textview.setText("test 자전거");
-        textview.setGravity(Gravity.CENTER);
-        stationRow.addView(textview);
-
-        //현황 입력
-        TextView textview2 = new TextView(this);
-        textview2.setText("위치 모름");
-        textview2.setGravity(Gravity.CENTER);
-        stationRow.addView(textview2);
-        stationRow.setId(Integer.parseInt("123"));
-
-        //table row 추가
-        stationLayout.addView(stationRow);
-    }
-
-
 
     //현재 위치로 지도 이동 함수
     public void goToCurrentLocation(View view) {
@@ -286,70 +453,4 @@ public class MapActivity extends AppCompatActivity {
         }
 
     }
-
-    //DB에서 보관소 정보 가져오기 함수
-    protected class StationAsyncTask extends AsyncTask<Object[],Object[],String> {
-
-        private int state;
-
-        public StationAsyncTask(int state) {
-            this.state = state;
-        }
-
-        @Override
-        protected String doInBackground(Object[]... Objects) {
-            StringBuffer sb = new StringBuffer();
-            Connection con = null;
-            Log.i("chaos", String.valueOf(state));
-
-            try {
-                Class.forName("org.mariadb.jdbc.Driver");
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-
-            try {
-                con = DriverManager.getConnection("jdbc:mysql://db-bigdata-bicycle.cynn0zdjjttk.us-east-1.rds.amazonaws.com:3306", "admin", "chaosproject");
-                Statement st = null;
-                ResultSet rs = null;
-                Log.i("chaos","db connection complete");
-
-                st = con.createStatement();
-                st.execute("use chaos");
-
-                if (st.execute("select id,stationLatitude,stationLongitude,stationName,stationId,parkingBikeTotCnt\n" +
-                        "from localInformation,everyOneHourAPI\n" +
-                        "where id = local_id and id like '%"+this.state+"' order by parkingBikeTotCnt DESC")) {
-                    rs = st.getResultSet();
-                }
-
-                while (rs.next()) {
-                    ArrayList<String> stationList = new ArrayList<String>();
-                    stationList.add(rs.getString("id"));
-                    stationList.add(rs.getString("stationLatitude"));
-                    stationList.add(rs.getString("stationLongitude"));
-                    stationList.add(rs.getString("stationName"));
-                    stationList.add(rs.getString("stationId"));
-                    stationList.add(rs.getString("parkingBikeTotCnt"));
-                    //Log.i("chaos",stationLatitude+" , "+stationLongitude+"");
-
-                    sb.append(stationList);
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            } finally {
-                if(con != null) {
-                    try {
-                        con.close();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-            String result = sb.toString();
-            return result;
-        }
-
-    }
-
 }
