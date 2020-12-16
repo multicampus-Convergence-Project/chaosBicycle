@@ -17,7 +17,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ChaosBicycle">
         <activity android:name=".MapActivity"/>
-        <activity android:name=".PubSubActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".AuthActivity" android:noHistory="true">
             <intent-filter>

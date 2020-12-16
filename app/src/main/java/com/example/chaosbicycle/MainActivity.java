@@ -48,10 +48,10 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void goToMqttTest(View view) {
-        Intent intent = new Intent(getApplicationContext(), com.example.chaosbicycle.PubSubActivity.class);
-        startActivity(intent);
-    }
+//    public void goToMqttTest(View view) {
+//        Intent intent = new Intent(getApplicationContext(), com.example.chaosbicycle.PubSubActivity.class);
+//        startActivity(intent);
+//    }
 
     private void getConnectionMqtt(){
 

@@ -8,15 +8,26 @@
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="133dp"
+        android:layout_height="21dp"
         android:layout_above="@+id/stationTable"
         android:layout_alignStart="@+id/stationTable"
         android:layout_alignEnd="@+id/stationTable"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="29dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="8dp"
         android:text="재배치 필요한 보관소" />
+
+    <TextView
+        android:id="@+id/tvStatus"
+        android:layout_width="107dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="-3dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="98dp"
+        android:text="Connected..." />
 
     <RelativeLayout
         android:id="@+id/map_view"
@@ -34,33 +45,33 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="284dp"
         android:onClick="goToCurrentLocation"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="295dp"
         android:text="현위치로 이동" />
 
     <ListView
         android:id="@+id/stationTable"
-        android:layout_width="192dp"
-        android:layout_height="245dp"
+        android:layout_width="181dp"
+        android:layout_height="239dp"
         android:layout_alignTop="@+id/bicycleTable"
         android:layout_alignBottom="@+id/bicycleTable"
         android:layout_alignParentStart="true"
         android:layout_marginStart="13dp"
         android:layout_marginLeft="9dp"
         android:layout_marginTop="0dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="-6dp"
+        android:layout_marginEnd="17dp"
+        android:layout_marginBottom="-116dp"
         android:layout_toStartOf="@+id/bicycleTable" />
 
     <ListView
         android:id="@+id/bicycleTable"
-        android:layout_width="192dp"
-        android:layout_height="245dp"
+        android:layout_width="186dp"
+        android:layout_height="123dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="9dp"
-        android:layout_marginBottom="6dp" />
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="128dp" />
 
     <TextView
         android:id="@+id/textView4"
@@ -73,5 +84,36 @@
         android:layout_marginEnd="43dp"
         android:layout_marginBottom="9dp"
         android:text="도난 자전거 목록" />
+
+    <Button
+        android:id="@+id/btnConnect"
+        android:layout_width="67dp"
+        android:layout_height="36dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="132dp"
+        android:layout_marginBottom="90dp"
+        android:text="연결" />
+
+    <Button
+        android:id="@+id/btnPublish"
+        android:layout_width="wrap_content"
+        android:layout_height="37dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="41dp"
+        android:layout_marginEnd="106dp"
+        android:layout_marginBottom="6dp"
+        android:text="부저 알림" />
+
+    <TextView
+        android:id="@+id/tvLastMessage"
+        android:layout_width="177dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="46dp"
+        android:text="tvLastMessage" />
 
 </RelativeLayout>
