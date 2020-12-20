@@ -93,8 +93,8 @@ public class PubSubMqtt extends Activity {
         btnConnect.setOnClickListener(connectClick);
         btnConnect.setEnabled(false);
 
-        btnPublish = (Button) findViewById(R.id.btnPublish);
-        btnPublish.setOnClickListener(publishClick);
+//        btnPublish = (Button) findViewById(R.id.btnPublish);
+//        btnPublish.setOnClickListener(publishClick);
 
         // MQTT client IDs are required to be unique per AWS IoT account.
         // This UUID is "practically unique" but does not _guarantee_

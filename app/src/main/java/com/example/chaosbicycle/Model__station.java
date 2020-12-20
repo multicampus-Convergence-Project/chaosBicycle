@@ -7,7 +7,7 @@ public class Model__station {
 
     private String stationName;
 
-    private String parkingBikeTotCnt;
+    private String shared;
 
     public String getStationLatitude ()
     {
@@ -39,19 +39,19 @@ public class Model__station {
         this.stationName = stationName;
     }
 
-    public String getParkingBikeTotCnt ()
+    public String getshared ()
     {
-        return parkingBikeTotCnt;
+        return shared;
     }
 
-    public void setParkingBikeTotCnt (String parkingBikeTotCnt)
+    public void setshared (String shared)
     {
-        this.parkingBikeTotCnt = parkingBikeTotCnt;
+        this.shared = shared;
     }
 
     @Override
     public String toString()
     {
-        return "ClassPojo [stationLatitude = "+stationLatitude+", stationLongitude = "+stationLongitude+", stationName = "+stationName+", parkingBikeTotCnt = "+parkingBikeTotCnt+"]";
+        return "ClassPojo [stationLatitude = "+stationLatitude+", stationLongitude = "+stationLongitude+", stationName = "+stationName+", shared = "+shared+"]";
     }
 }

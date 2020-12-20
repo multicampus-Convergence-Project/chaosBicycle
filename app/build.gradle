@@ -29,6 +29,8 @@ android {
 }
 
 dependencies {
+    //json library
+    implementation 'org.json:json:20190722'
     //Retrofit - default
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     //Retrofit - gson
