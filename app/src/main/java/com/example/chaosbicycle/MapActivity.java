@@ -317,7 +317,7 @@ public class MapActivity extends AppCompatActivity {
 
                                         ListView listview = (ListView)findViewById(R.id.bicycleTable);
 
-                                        createBicycleTable(listview,stealList,lat,log,shock);
+                                        createBicycleTable(listview,stealList,lat,log);
 
                                     } catch (UnsupportedEncodingException | JSONException e) {
                                         Log.e(LOG_TAG, "Message encoding error.", e);
@@ -378,14 +378,14 @@ public class MapActivity extends AppCompatActivity {
             StationMarker.setTag(i);
             StationMarker.setMapPoint(MapPoint.mapPointWithGeoCoord(Double.parseDouble(station.getStationLatitude()),Double.parseDouble(station.getStationLongitude())));
 
-            if(Integer.parseInt(station.getshared()) <50){
+            if(station.getPredict() > station.getRackTotCnt()){
                 // 기본으로 제공하는 BluePin 마커 모양.
-                StationMarker.setMarkerType(MapPOIItem.MarkerType.RedPin);
-            }else if(Integer.parseInt(station.getshared()) <100){
+                StationMarker.setMarkerType(MapPOIItem.MarkerType.YellowPin);
+            }else if(station.getPredict() > station.getRackTotCnt() * 0.7){
                 // 기본으로 제공하는 BluePin 마커 모양.
                 StationMarker.setMarkerType(MapPOIItem.MarkerType.BluePin);
             }else{
-                StationMarker.setMarkerType(MapPOIItem.MarkerType.YellowPin);
+                StationMarker.setMarkerType(MapPOIItem.MarkerType.RedPin);
             }
 
             // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
@@ -394,7 +394,8 @@ public class MapActivity extends AppCompatActivity {
             View mView = getLayoutInflater().inflate(R.layout.activity_custommaker, null);
             ((ImageView) mView.findViewById(R.id.marker_image)).setImageResource(R.drawable.bike); /* Maker Image 변경 해주는 구문 */
             ((TextView) mView.findViewById(R.id.main_title)).setText(station.getStationName()); /* Maker Text 변경 해주는 구문 */
-            ((TextView) mView.findViewById(R.id.sub_title)).setText("현재 거치율 : "+station.getshared()+"%"); /* Maker 장소 변경 해주는 구문 */
+            ((TextView) mView.findViewById(R.id.sub_title)).setText("현재 사용가능 대수 : "+station.getParkingBikeTotCnt()+"/"+station.getRackTotCnt()+"("+station.getShared()+"%)"); /* Maker 장소 변경 해주는 구문 */
+            ((TextView) mView.findViewById(R.id.sub_title2)).setText("1시간 후 사용가능 : "+station.getPredict()+"대 예상"); /* Maker 장소 변경 해주는 구문 */
             StationMarker.setCustomCalloutBalloon(mView);
 
             mapView.addPOIItem(StationMarker);
@@ -436,15 +437,15 @@ public class MapActivity extends AppCompatActivity {
 
         //리스트뷰에 보여질 아이템을 추가
         Iterator iterator = checkAlready.iterator();
-        for (int i=0;i<10;i++){
+        while(iterator.hasNext()){
             Model__station stationData = ((Model__station) iterator.next());
-            list.add(stationData.getStationName()+"\n"+stationData.getshared()+"% 거치 상태");
+            list.add(stationData.getStationName()+"\n 현재"+stationData.getParkingBikeTotCnt()+"대 사용가능"+"\n"+stationData.getPredict()+"대 사용가능 예상");
         }
 
     }
 
     //도난 자전거 테이블 생성 함수 실행
-    public void createBicycleTable(ListView listview, List<String> list,String lat,String log,String shock){
+    public void createBicycleTable(ListView listview, List<String> list,String lat,String log){
         try{
             Log.d("createBicycleTable",lat+", "+log);
 
@@ -474,7 +475,7 @@ public class MapActivity extends AppCompatActivity {
             listview.setAdapter(adapter);
 
             //리스트뷰에 보여질 아이템을 추가
-            list.add("도난 자전거: "+shock);
+            list.add("도난 자전거");
             StolenBicycleMarkerList.add(StolenBicycleMarker);
 
             //리스트뷰의 아이템을 클릭시 해당 아이템의 문자열을 가져오기 위한 처리

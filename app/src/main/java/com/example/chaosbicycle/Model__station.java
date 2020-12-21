@@ -7,7 +7,16 @@ public class Model__station {
 
     private String stationName;
 
-    private String shared;
+    private Integer shared;
+
+    private Integer rackTotCnt;
+
+    private Integer predict;
+
+    private Integer parkingBikeTotCnt;
+
+    private Integer stationNumber;
+
 
     public String getStationLatitude ()
     {
@@ -39,19 +48,54 @@ public class Model__station {
         this.stationName = stationName;
     }
 
-    public String getshared ()
+    public Integer getShared ()
     {
         return shared;
     }
 
-    public void setshared (String shared)
+    public void setShared (Integer shared)
     {
         this.shared = shared;
     }
 
+    public Integer getRackTotCnt ()
+    {
+        return rackTotCnt;
+    }
+
+    public void setRackTotCnt (Integer rackTotCnt)
+    {
+        this.rackTotCnt = rackTotCnt;
+    }
+
+    public Integer getPredict ()
+    {
+        return predict;
+    }
+
+    public void setPredict (Integer predict)
+    {
+        this.predict = predict;
+    }
+
+    public Integer getParkingBikeTotCnt (){ return parkingBikeTotCnt; }
+
+    public void setParkingBikeTotCnt (Integer parkingBikeTotCnt)
+    {
+        this.parkingBikeTotCnt = parkingBikeTotCnt;
+    }
+
+    public Integer getStationNumber (){ return stationNumber; }
+
+    public void setStationNumber (Integer stationNumber)
+    {
+        this.stationNumber = stationNumber;
+    }
+
+
     @Override
     public String toString()
     {
-        return "ClassPojo [stationLatitude = "+stationLatitude+", stationLongitude = "+stationLongitude+", stationName = "+stationName+", shared = "+shared+"]";
+        return "ClassPojo [predict= "+predict+", parkingBikeTotCnt= "+parkingBikeTotCnt+", stationNumber= "+stationNumber+", rackTotCnt= "+rackTotCnt+", stationLatitude = "+stationLatitude+", stationLongitude = "+stationLongitude+", stationName = "+stationName+", shared = "+shared+"]";
     }
 }
